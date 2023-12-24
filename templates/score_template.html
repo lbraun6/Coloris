@@ -2,21 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome Page</title>
+    <title>Round Score</title>
 </head>
 <body>
     <div class="welcome-text" id="bobbingDiv">
         <span class="gradient-text">Coloris</span>
     </div>
+    <p>The color is...</p>
+    <p>({{ current_color.0 }}, {{ current_color.1 }}, {{ current_color.2 }})</p>
+    <div class="color-square" style="background-color: rgb({{ current_color.0 }}, {{ current_color.1 }}, {{ current_color.2 }}); width: 100px; height: 100px;"></div>
+    <p>You guessed...</p>
+    <p>({{ guessed_color.0 }}, {{ guessed_color.1 }}, {{ guessed_color.2 }})</p>
+    <div class="color-square" style="background-color: rgb({{ guessed_color.0 }}, {{ guessed_color.1 }}, {{ guessed_color.2 }}); width: 100px; height: 100px;"></div>
+    <p>You scored {{ round_score }} points this round</p>
     <nav class="navbar">
         <ul>
-            <li><div class="navbar-text"><a href="/home/">Home</a></div></li>
-            <li><div class="navbar-text"><a href="/game/play/">Play</a></div></li>
-            <li><div class="navbar-text"><a href="/about/">About</a></div></li>
+            <li><div class="navbar-text"><a href={{ link }}>Continue</a></div></li>
         </ul>
     </nav>
 </body>
-
 <script>
     // Get the div element
     var bobbingDiv = document.getElementById('bobbingDiv');
@@ -25,9 +29,9 @@
     var initialTop = 0;
     bobbingDiv.style.top = initialTop + 'px';
 
-  // Set the bobbing motion
+    // Set the bobbing motion
     function bob() {
-        var amplitude = 20; // Adjust the bobbing height
+        var amplitude = 10; // Adjust the bobbing height
         var speed = 1000; // Adjust the bobbing speed (milliseconds)
 
         // Calculate the new position using a sine wave for smooth bobbing
@@ -52,15 +56,13 @@
         text-align: center;
         color: white;
         position: relative;
-        vertical-align: middle;
-        margin-top: 20%;
     }
 
     .gradient-text {
         background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
         -webkit-background-clip: text; /* For WebKit browsers */
         color: transparent; /* Set text color to transparent */
-        font-size: 10em;
+        font-size: 6em;
         font-family: "Courier", serif;
         -webkit-text-size-adjust: none;
         font-weight: bold;
@@ -68,10 +70,16 @@
         -webkit-text-stroke-color: white;
     }
 
+    .color-square {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
     p, ul, li, label {
         font-family: "Courier", serif;
         -webkit-text-size-adjust: none;
         color: white;
+        text-align: center;
     }
 
     h1, h2 {
@@ -131,10 +139,6 @@
 
     .navbar-text:hover {
         background-color: gray;
-    }
-
-    label, input, span {
-        margin-right: 10px;
     }
 
     form {
