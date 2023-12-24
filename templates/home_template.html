@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome Page</title>
+</head>
+<body>
+    <div class="welcome_text" id="bobbingDiv">
+        <span class="gradient-text">Coloris</span>
+    </div>
+    <nav class="navbar">
+        <ul>
+            <li><div class="navbar-text"><a href="/home/">Home</a></div></li>
+            <li><div class="navbar-text"><a href="/game/play/">Play</a></div></li>
+            <li><div class="navbar-text"><a href="/about/">About</a></div></li>
+        </ul>
+    </nav>
+</body>
+
+<script>
+    // Get the div element
+    var bobbingDiv = document.getElementById('bobbingDiv');
+
+    // Set initial position
+    var initialTop = 0;
+    bobbingDiv.style.top = initialTop + 'px';
+
+  // Set the bobbing motion
+    function bob() {
+        var amplitude = 20; // Adjust the bobbing height
+        var speed = 1000; // Adjust the bobbing speed (milliseconds)
+
+        // Calculate the new position using a sine wave for smooth bobbing
+        var newPosition = initialTop + amplitude * Math.sin(Date.now() / speed);
+
+        // Apply the new position to the top property
+        bobbingDiv.style.top = newPosition + 'px';
+
+        // Repeat the bobbing motion by using requestAnimationFrame
+        requestAnimationFrame(bob);
+    }
+
+    // Start the bobbing motion
+    bob();
+</script>
+<style>
+    body {
+        background-color: black;
+    }
+
+    .welcome_text {
+        text-align: center;
+        color: white;
+        position: relative;
+        vertical-align: middle;
+        margin-top: 20%;
+    }
+
+    .gradient-text {
+        background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+        -webkit-background-clip: text; /* For WebKit browsers */
+        color: transparent; /* Set text color to transparent */
+        font-size: 10em;
+        font-family: "Courier", serif;
+        -webkit-text-size-adjust: none;
+        font-weight: bold;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: white;
+    }
+
+    p, ul, li, label {
+        font-family: "Courier", serif;
+        -webkit-text-size-adjust: none;
+        color: white;
+    }
+
+    h1, h2 {
+        font-family: "Courier", serif;
+        color: white;
+    }
+
+    .navbar {
+        background-color: black;
+        position: relative;
+        z-index: 1000;
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: 20px;
+        /* border: 3px solid;
+        border-image: linear-gradient(to bottom right, red, orange, yellow, green, blue, indigo, violet) 1;
+        border-radius: 15px; */
+    }
+
+    .navbar ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        background: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 15px;
+    }
+
+    .navbar li {
+        display: inline-block;
+        position: relative;
+    }
+
+    .navbar li:not(:first-child)::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        height: 70%;
+        /* border-left: 3px solid;
+        border-image: linear-gradient(to bottom right, red, orange, yellow, green, blue, indigo, violet) 1; */
+    }
+
+    .navbar li a {
+        color: white;
+        display: block;
+        padding: 10px 30px;
+        text-decoration: none;
+    }
+
+    .navbar-text {
+        margin-left: 8px;
+    }
+
+    .navbar-text:hover {
+        background-color: gray;
+    }
+
+    label, input, span {
+        margin-right: 10px;
+    }
+
+    form {
+        display: inline-block;
+    }
+</style>
+</html>

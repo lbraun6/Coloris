@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game</title>
+</head>
+<body>
+    <div class="welcome_text" id="bobbingDiv">
+        <span class="gradient-text">Coloris</span>
+    </div>
+    <nav class="navbar">
+        <ul>
+            <li><div class="navbar-text"><a href="/home/">Home</a></div></li>
+            <li><div class="navbar-text"><a href="/game/play/">Play</a></div></li>
+            <li><div class="navbar-text"><a href="/about/">About</a></div></li>
+        </ul>
+    </nav>
+    <div class="round-count"><h1>Round {{ request.session.round_number }}</h1></div>
+    <div class="left-column">
+
+    </div>
+    <div class="middle-column">
+        <div class="color-square" style="background-color: rgb({{ current_color.0 }}, {{ current_color.1 }}, {{ current_color.2 }}); width: 100px; height: 100px;"></div>
+        <div class="sliders">
+            <form method="post" action="{% url 'color_is:evaluate_guess_view' %}">
+                {% csrf_token %}
+
+                <div class="color-group">
+                    <label for="red">Red:</label>
+                    <input type="range" id="red" name="red" min="0" max="255" required>
+                    <span id="redValue">122</span>
+                </div>
+
+                <div class="color-group">
+                    <label for="green">Green:</label>
+                    <input type="range" id="green" name="green" min="0" max="255" required>
+                    <span id="greenValue">122</span>
+                </div>
+
+                <div class="color-group">
+                    <label for="blue">Blue:</label>
+                    <input type="range" id="blue" name="blue" min="0" max="255" required>
+                    <span id="blueValue">122</span>
+                </div>
+
+                <button type="submit">Submit Guess</button>
+            </form>
+        </div>
+    </div>
+    <div class="right-column">
+
+    </div>
+    <div class="score">
+        <p>Score: {{ score }}</p>
+    </div>
+</body>
+
+<script>
+    // Add event listeners to update the numerical values when sliders are moved
+    document.getElementById('red').addEventListener('input', function() {
+        document.getElementById('redValue').innerText = this.value;
+    });
+
+    document.getElementById('green').addEventListener('input', function() {
+        document.getElementById('greenValue').innerText = this.value;
+    });
+
+    document.getElementById('blue').addEventListener('input', function() {
+        document.getElementById('blueValue').innerText = this.value;
+    });
+
+    // Get the div element
+    var bobbingDiv = document.getElementById('bobbingDiv');
+
+    // Set initial position
+    var initialTop = 0;
+    bobbingDiv.style.top = initialTop + 'px';
+
+    // Set the bobbing motion
+    function bob() {
+        var amplitude = 10; // Adjust the bobbing height
+        var speed = 1000; // Adjust the bobbing speed (milliseconds)
+
+        // Calculate the new position using a sine wave for smooth bobbing
+        var newPosition = initialTop + amplitude * Math.sin(Date.now() / speed);
+
+        // Apply the new position to the top property
+        bobbingDiv.style.top = newPosition + 'px';
+
+        // Repeat the bobbing motion by using requestAnimationFrame
+        requestAnimationFrame(bob);
+    }
+
+    // Start the bobbing motion
+    bob();
+</script>
+<style>
+    body {
+        background-color: black;
+    }
+
+    .welcome_text {
+        text-align: center;
+        color: white;
+        position: relative;
+    }
+
+    .gradient-text {
+        background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+        -webkit-background-clip: text; /* For WebKit browsers */
+        color: transparent; /* Set text color to transparent */
+        font-size: 6em;
+        font-family: "Courier", serif;
+        -webkit-text-size-adjust: none;
+        font-weight: bold;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: white;
+    }
+
+    p, ul, li, label {
+        font-family: "Courier", serif;
+        -webkit-text-size-adjust: none;
+        color: white;
+    }
+
+    h1, h2 {
+        font-family: "Courier", serif;
+        color: white;
+    }
+
+    .navbar {
+        background-color: black;
+        position: relative;
+        z-index: 1000;
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: 20px;
+        /* border: 3px solid;
+        border-image: linear-gradient(to bottom right, red, orange, yellow, green, blue, indigo, violet) 1;
+        border-radius: 15px; */
+    }
+
+    .navbar ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        background: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 15px;
+    }
+
+    .navbar li {
+        display: inline-block;
+        position: relative;
+    }
+
+    .navbar li:not(:first-child)::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        height: 70%;
+        /* border-left: 3px solid;
+        border-image: linear-gradient(to bottom right, red, orange, yellow, green, blue, indigo, violet) 1; */
+    }
+
+    .navbar li a {
+        color: white;
+        display: block;
+        padding: 10px 30px;
+        text-decoration: none;
+    }
+
+    .navbar-text {
+        margin-left: 8px;
+    }
+
+    .navbar-text:hover {
+        background-color: gray;
+    }
+
+    .round-count {
+        text-align: center;
+    }
+
+    .color-square {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .sliders {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .color-group {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+
+    label, input, span {
+        margin-right: 10px;
+    }
+
+    form {
+        display: inline-block;
+    }
+
+    #redValue, #greenValue, #blueValue {
+        color: white;
+        font-family: "Georgia", serif;
+    }
+
+    .score {
+        text-align: center;
+    }
+</style>
+</html>
