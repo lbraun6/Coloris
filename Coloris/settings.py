@@ -84,6 +84,7 @@ WSGI_APPLICATION = 'Coloris.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'DATABASE_URL': os.environ.get('SUPABASE_DATABASE_URL'),
         'NAME': os.environ.get("DB_NAME"),
         'USER': os.environ.get("DB_USER"),
         'PASSWORD': os.environ.get("DB_PASSWORD"),
