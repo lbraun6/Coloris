@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import render
 from django.conf.urls.static import static
-from . import settings
+from django.conf import settings
 
 
 def home_view(request):
@@ -37,3 +37,7 @@ urlpatterns = [
     path("about/", about_view, name="about_view"),
     path("game/", include("color_is.urls")),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
