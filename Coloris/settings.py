@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +22,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)!y(e%#w4wqb17ny3y2u5&^3pstdowna6b=3lj^uh9_vxt(mbc'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-)!y(e%#w4wqb17ny3y2u5&^3pstdowna6b=3lj^uh9_vxt(mbc')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app", "coloris.vercel.app"]
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1').split(",")
+
+SUPABASE_DB_URL = os.environ.get("SUPABASE_DB_URL")
+
+DJANGO_ENV = os.environ.get('DJANGO_ENV')
 
 
 # Application definition
@@ -81,17 +86,23 @@ WSGI_APPLICATION = 'Coloris.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'DATABASE_URL': os.environ.get('SUPABASE_DATABASE_URL'),
-        'NAME': os.environ.get("DB_NAME"),
-        'USER': os.environ.get("DB_USER"),
-        'PASSWORD': os.environ.get("DB_PASSWORD"),
-        'HOST': os.environ.get("DB_HOST"),
-        'PORT': os.environ.get("DB_PORT"),
+
+# Check if the Supabase database URL is set
+if SUPABASE_DB_URL:
+    # Use the Supabase database configuration
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=SUPABASE_DB_URL, conn_max_age=600
+        )
     }
-}
+else:
+    # Use the SQLite database configuration for development
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
