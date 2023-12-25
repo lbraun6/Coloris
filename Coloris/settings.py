@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-)!y(e%#w4wqb17ny3y2u5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ["vercel.app", "now.sh", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = [".vercel.app", "now.sh", "localhost", "127.0.0.1"]
 
 SUPABASE_DB_URL = os.environ.get("SUPABASE_DB_URL")
 
