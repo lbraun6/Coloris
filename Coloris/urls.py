@@ -21,7 +21,7 @@ from django.conf import settings
 
 
 def home_view(request):
-
+    print("Home view reached")
     return render(request, "home_template.html")
 
 
