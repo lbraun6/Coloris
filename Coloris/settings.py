@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-)!y(e%#w4wqb17ny3y2u5&^3pstdowna6b=3lj^uh9_vxt(mbc')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["coloris.vercel.app", ".vercel.app", "now.sh", "localhost", "127.0.0.1"]
 
